@@ -30,6 +30,14 @@
               <span>Tree & Desk Store</span>
             </div>
           </div>
+          <button
+            class="tactile-btn tactile-btn-sm mobile-sidebar-close"
+            id="btn-close-sidebar"
+            type="button"
+            aria-label="Close categories"
+          >
+            ✕
+          </button>
         </div>
 
         <!-- Quick Navigation -->
@@ -84,10 +92,33 @@
         </div>
       </aside>
 
+      <!-- Mobile Sidebar Backdrop -->
+      <div class="sidebar-backdrop" id="sidebar-backdrop"></div>
+
       <!-- Main Content Area -->
       <main class="main-wrapper">
         <!-- Top Header Bar -->
         <header class="top-header skeuo-panel">
+          <!-- Mobile Brand & Drawer Controls -->
+          <div class="mobile-top-bar">
+            <button
+              class="tactile-btn tactile-btn-sm"
+              id="btn-open-sidebar"
+              type="button"
+              aria-label="Open categories menu"
+            >
+              <span>☰</span> <span>Categories</span>
+            </button>
+            <div class="mobile-brand-title">⭐ All Websites</div>
+            <button
+              class="tactile-btn tactile-btn-sm tactile-btn-primary"
+              id="btn-mobile-add-site"
+              type="button"
+            >
+              <span>+</span> Add
+            </button>
+          </div>
+
           <!-- Recessed Search Box -->
           <div class="search-container">
             <div class="search-input-wrapper recessed-tray">

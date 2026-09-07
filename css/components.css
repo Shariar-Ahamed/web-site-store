@@ -1305,36 +1305,366 @@
 }
 
 /* ---------------------------------------------------------
-   RESPONSIVE DESIGN
+   RESPONSIVE DESIGN (Phone, Tablet, Laptop, Desktop PC)
    --------------------------------------------------------- */
+
+/* Default states for mobile controls on Desktop (hidden on PC/laptop) */
+.mobile-top-bar {
+  display: none;
+}
+
+.mobile-sidebar-close {
+  display: none;
+}
+
+.sidebar-backdrop {
+  display: none;
+}
+
+/* 1. Laptops & Compact Desktops (1024px - 1280px) */
+@media (max-width: 1280px) {
+  .sidebar {
+    width: 280px;
+    min-width: 260px;
+  }
+  .websites-grid {
+    grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+    gap: 14px;
+  }
+}
+
+/* 2. Tablets (Landscape & Portrait) & Small Laptops (769px - 1023px) */
+@media (max-width: 1023px) {
+  .app-layout {
+    padding: 12px;
+    gap: 12px;
+  }
+  .sidebar {
+    width: 260px;
+    min-width: 240px;
+    padding: 16px 12px;
+  }
+  .top-header {
+    padding: 0 16px;
+    height: auto;
+    min-height: 64px;
+    flex-wrap: wrap;
+    gap: 12px;
+    padding-top: 10px;
+    padding-bottom: 10px;
+  }
+  .search-container {
+    max-width: 320px;
+  }
+  .view-mode-selector {
+    padding: 3px;
+  }
+  .view-mode-btn {
+    padding: 6px 10px;
+    font-size: 0.78rem;
+  }
+  .websites-grid {
+    grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
+    gap: 12px;
+  }
+}
+
+/* 3. Mobile Devices & Tablet Portrait (<= 900px) */
 @media (max-width: 900px) {
   .app-layout {
     flex-direction: column;
     padding: 10px;
-    height: auto;
-    min-height: 100vh;
+    gap: 10px;
+    height: 100vh;
+    height: 100dvh;
+    overflow: hidden;
   }
-  .sidebar {
+
+  /* Mobile Top Bar inside Header */
+  .mobile-top-bar {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
     width: 100%;
-    max-width: 100%;
-    height: auto;
-    max-height: 380px;
+    margin-bottom: 4px;
   }
+
+  .mobile-brand-title {
+    font-size: 1.05rem;
+    font-weight: 800;
+    color: var(--text-primary);
+    text-shadow: 0 1px 0 #ffffff;
+  }
+
+  .mobile-sidebar-close {
+    display: inline-flex;
+  }
+
+  /* Off-Canvas Slide-out Drawer Sidebar */
+  .sidebar {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 86%;
+    max-width: 340px;
+    height: 100vh;
+    height: 100dvh;
+    max-height: 100dvh;
+    z-index: 2000;
+    transform: translateX(-105%);
+    transition: transform 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+    box-shadow: 12px 0 40px rgba(15, 23, 42, 0.35);
+    border-radius: 0 var(--radius-lg) var(--radius-lg) 0;
+    background: #eef2f7;
+    overflow-y: auto;
+  }
+
+  .sidebar.mobile-open {
+    transform: translateX(0);
+  }
+
+  /* Sidebar Backdrop */
+  .sidebar-backdrop {
+    display: block;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    background: rgba(15, 23, 42, 0.45);
+    backdrop-filter: blur(4px);
+    -webkit-backdrop-filter: blur(4px);
+    z-index: 1999;
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 0.25s ease;
+  }
+
+  .sidebar-backdrop.active {
+    opacity: 1;
+    pointer-events: auto;
+  }
+
+  /* Main Wrapper */
   .main-wrapper {
-    height: auto;
+    flex: 1;
+    height: 100%;
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
   }
-  .content-body {
-    height: auto;
-    overflow: visible;
-  }
-  .websites-grid {
-    grid-template-columns: 1fr;
-  }
+
+  /* Top Header Controls on Mobile */
   .top-header {
     height: auto;
-    padding: 14px;
+    padding: 12px 14px;
     flex-direction: column;
     align-items: stretch;
+    gap: 8px;
+    margin-bottom: 10px;
+  }
+
+  .top-header .header-actions {
+    display: none; /* Add button is in .mobile-top-bar */
+  }
+
+  .search-container {
+    max-width: 100%;
+    width: 100%;
+  }
+
+  .search-input-wrapper {
+    height: 42px;
+    padding: 0 12px;
+  }
+
+  .search-input {
+    font-size: 16px; /* Prevents auto-zoom in iOS Safari */
+  }
+
+  .search-shortcut-badge {
+    display: none; /* Hide Ctrl K on touch/mobile */
+  }
+
+  .view-mode-selector {
+    width: 100%;
+    justify-content: space-between;
+    padding: 3px;
+  }
+
+  .view-mode-btn {
+    flex: 1;
+    justify-content: center;
+    padding: 8px 6px;
+    font-size: 0.8rem;
+    font-weight: 700;
+  }
+
+  /* Content Body */
+  .content-body {
+    flex: 1;
+    padding: 14px 12px;
+    overflow-y: auto;
+    -webkit-overflow-scrolling: touch;
+  }
+
+  /* Breadcrumbs on Mobile */
+  .toolbar-bar {
+    flex-direction: column;
+    align-items: stretch;
+    gap: 10px;
+    margin-bottom: 14px;
+    padding-bottom: 12px;
+  }
+
+  .breadcrumb-trail {
+    width: 100%;
+    overflow-x: auto;
+    flex-wrap: nowrap;
+    white-space: nowrap;
+    padding-bottom: 4px;
+    scrollbar-width: none;
+    -webkit-overflow-scrolling: touch;
+  }
+
+  .breadcrumb-trail::-webkit-scrollbar {
+    display: none;
+  }
+
+  .tree-actions {
+    width: 100%;
+    justify-content: space-between;
+  }
+
+  /* Grid & Cards on Mobile */
+  .subfolders-grid {
+    grid-template-columns: repeat(auto-fill, minmax(140px, 1fr));
+    gap: 10px;
+    margin-bottom: 16px;
+  }
+
+  .subfolder-card {
+    padding: 12px 14px;
+  }
+
+  .websites-grid {
+    grid-template-columns: 1fr;
+    gap: 14px;
+  }
+
+  .site-card {
+    padding: 16px;
+  }
+
+  /* Tree Diagram on Mobile */
+  .tree-diagram {
+    gap: 10px;
+  }
+
+  .tree-branch-header {
+    padding: 8px 12px;
+    max-width: 100%;
+  }
+
+  .tree-branch-title {
+    font-size: 0.88rem;
+  }
+
+  .tree-branch-children {
+    padding-left: 16px;
+    margin-left: 8px;
+    gap: 6px;
+  }
+
+  .tree-node-row::before {
+    left: -14px;
+  }
+
+  .tree-node-row::after {
+    left: -14px;
+    width: 12px;
+  }
+
+  .tree-leaf-site {
+    min-width: 0;
+    width: 100%;
+    max-width: 100%;
+    padding: 8px 10px;
+    gap: 8px;
+  }
+
+  .tree-leaf-name {
+    font-size: 0.82rem;
+  }
+
+  /* Chart View on Mobile */
+  .chart-canvas-wrapper {
+    min-height: 420px;
+    height: 420px;
+  }
+
+  .chart-floating-controls {
+    top: 10px;
+    right: 10px;
+  }
+
+  /* Modals on Mobile */
+  .modal-box {
+    width: 95vw;
+    max-width: 440px;
+    padding: 20px 16px;
+    margin: 10px auto;
+  }
+
+  .modal-title {
+    font-size: 1.05rem;
+  }
+
+  /* Toast on Mobile */
+  .toast-container {
+    bottom: 16px;
+    right: 16px;
+    left: 16px;
+  }
+
+  .toast {
+    padding: 10px 14px;
+    font-size: 0.82rem;
+  }
+}
+
+/* 4. Small Phones (<= 480px) */
+@media (max-width: 480px) {
+  .app-layout {
+    padding: 6px;
+    gap: 8px;
+  }
+
+  .subfolders-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .view-mode-btn {
+    padding: 7px 4px;
+    font-size: 0.74rem;
+    gap: 4px;
+  }
+
+  .site-card {
+    padding: 14px;
+  }
+
+  .site-title {
+    font-size: 0.94rem;
+  }
+
+  .site-domain-badge {
+    font-size: 0.72rem;
+  }
+
+  .modal-box {
+    width: 96vw;
+    padding: 18px 14px;
   }
 }
 

@@ -276,4 +276,59 @@ document.addEventListener('DOMContentLoaded', () => {
       showToast(e.detail.message, e.detail.icon);
     }
   });
+
+  // ---------------------------------------------------------
+  // MOBILE DRAWER CONTROLS
+  // ---------------------------------------------------------
+  const btnOpenSidebar = document.getElementById('btn-open-sidebar');
+  const btnCloseSidebar = document.getElementById('btn-close-sidebar');
+  const sidebarBackdrop = document.getElementById('sidebar-backdrop');
+  const appSidebar = document.getElementById('app-sidebar');
+  const btnMobileAddSite = document.getElementById('btn-mobile-add-site');
+
+  function openMobileSidebar() {
+    if (appSidebar) appSidebar.classList.add('mobile-open');
+    if (sidebarBackdrop) sidebarBackdrop.classList.add('active');
+    document.body.style.overflow = 'hidden';
+  }
+
+  function closeMobileSidebar() {
+    if (appSidebar) appSidebar.classList.remove('mobile-open');
+    if (sidebarBackdrop) sidebarBackdrop.classList.remove('active');
+    document.body.style.overflow = '';
+  }
+
+  if (btnOpenSidebar) btnOpenSidebar.addEventListener('click', openMobileSidebar);
+  if (btnCloseSidebar) btnCloseSidebar.addEventListener('click', closeMobileSidebar);
+  if (sidebarBackdrop) sidebarBackdrop.addEventListener('click', closeMobileSidebar);
+
+  // Auto-close drawer on mobile when clicking any category or subfolder
+  const sidebarTreeContainer = document.getElementById('sidebar-tree');
+  if (sidebarTreeContainer) {
+    sidebarTreeContainer.addEventListener('click', (e) => {
+      if (window.innerWidth <= 900 && (e.target.closest('.nav-item') || e.target.closest('.sidebar-sub-item'))) {
+        closeMobileSidebar();
+      }
+    });
+  }
+  const quickNavEl = document.querySelector('.quick-nav');
+  if (quickNavEl) {
+    quickNavEl.addEventListener('click', (e) => {
+      if (window.innerWidth <= 900 && e.target.closest('.nav-item')) {
+        closeMobileSidebar();
+      }
+    });
+  }
+
+  if (btnMobileAddSite) {
+    btnMobileAddSite.addEventListener('click', () => {
+      const folderSelect = document.getElementById('site-target-folder');
+      populateFolderSelect(folderSelect, store.activeFolderId);
+      document.getElementById('form-add-site').reset();
+      folderSelect.value = store.activeFolderId || store.root.id;
+      refreshCustomSelect(folderSelect);
+      openModal(addSiteModal);
+      document.getElementById('site-name').focus();
+    });
+  }
 });
