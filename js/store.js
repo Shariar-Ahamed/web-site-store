@@ -2,6 +2,7 @@ import { initialBookmarkData } from './bookmarks-data.js';
 
 const STORAGE_KEY = 'web_store_bookmarks_data_v4';
 const FAVORITES_KEY = 'web_store_favorites_v2';
+const VIEW_MODE_KEY = 'web_store_view_mode_v2';
 
 class BookmarkStore {
   constructor() {
@@ -9,13 +10,13 @@ class BookmarkStore {
     this.favorites = this.loadFavorites();
     this.activeFolderId = this.root.id || '423';
     this.activeFilter = 'folder'; // 'folder' | 'favorites' | 'recent' | 'all_flat'
-    this.viewMode = localStorage.getItem('web_store_view_mode') || 'tree'; // 'tree' | 'grid'
+    this.viewMode = localStorage.getItem(VIEW_MODE_KEY) || 'grid'; // 'grid' (default) | 'tree' | 'chart'
   }
 
   setViewMode(mode) {
     this.viewMode = mode;
     try {
-      localStorage.setItem('web_store_view_mode', mode);
+      localStorage.setItem(VIEW_MODE_KEY, mode);
     } catch (e) {
       console.warn(e);
     }

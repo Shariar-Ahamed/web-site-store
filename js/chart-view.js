@@ -3,9 +3,19 @@ import { store } from './store.js';
 export class ChartViewRenderer {
   constructor(containerEl) {
     this.container = containerEl;
-    this.scale = 1;
-    this.panX = 60;
-    this.panY = 60;
+    if (window.innerWidth < 600) {
+      this.scale = 0.55;
+      this.panX = 20;
+      this.panY = 40;
+    } else if (window.innerWidth < 900) {
+      this.scale = 0.72;
+      this.panX = 35;
+      this.panY = 50;
+    } else {
+      this.scale = 1;
+      this.panX = 60;
+      this.panY = 60;
+    }
     this.isDragging = false;
     this.startX = 0;
     this.startY = 0;
@@ -210,6 +220,27 @@ export class ChartViewRenderer {
     }
   }
 
+  fitView(svg) {
+    const rect = svg.getBoundingClientRect();
+    const width = rect.width || window.innerWidth;
+    const height = rect.height || 420;
+
+    if (width < 600) {
+      this.scale = 0.55;
+      this.panX = 20;
+      this.panY = 40;
+    } else if (width < 900) {
+      this.scale = 0.72;
+      this.panX = 35;
+      this.panY = 50;
+    } else {
+      this.scale = 1;
+      this.panX = 60;
+      this.panY = 60;
+    }
+    this.updateTransform();
+  }
+
   bindEvents(wrapper, svg, controls) {
     // 1. Mouse Drag Panning
     svg.addEventListener('mousedown', (e) => {
@@ -238,7 +269,7 @@ export class ChartViewRenderer {
     svg.addEventListener('wheel', (e) => {
       e.preventDefault();
       const zoomFactor = e.deltaY < 0 ? 1.1 : 0.9;
-      const newScale = Math.min(Math.max(this.scale * zoomFactor, 0.35), 2.2);
+      const newScale = Math.min(Math.max(this.scale * zoomFactor, 0.25), 2.5);
 
       // Zoom towards mouse pointer
       const rect = svg.getBoundingClientRect();
@@ -252,31 +283,97 @@ export class ChartViewRenderer {
       this.updateTransform();
     }, { passive: false });
 
-    // 3. Zoom Controls
+    // 3. Touch Drag (1-finger pan) and Pinch-to-Zoom (2-finger pinch)
+    let isTouchDragging = false;
+    let touchStartX = 0;
+    let touchStartY = 0;
+
+    let isPinching = false;
+    let pinchStartDist = 0;
+    let pinchStartScale = 1;
+    let pinchStartPanX = 0;
+    let pinchStartPanY = 0;
+    let pinchMidX = 0;
+    let pinchMidY = 0;
+
+    const getDistance = (t1, t2) => Math.hypot(t1.clientX - t2.clientX, t1.clientY - t2.clientY);
+
+    svg.addEventListener('touchstart', (e) => {
+      if (e.target.closest('button') || e.target.closest('a')) return;
+
+      if (e.touches.length === 1) {
+        isPinching = false;
+        isTouchDragging = true;
+        touchStartX = e.touches[0].clientX - this.panX;
+        touchStartY = e.touches[0].clientY - this.panY;
+      } else if (e.touches.length === 2) {
+        isTouchDragging = false;
+        isPinching = true;
+        pinchStartDist = getDistance(e.touches[0], e.touches[1]);
+        pinchStartScale = this.scale;
+        pinchStartPanX = this.panX;
+        pinchStartPanY = this.panY;
+
+        const rect = svg.getBoundingClientRect();
+        pinchMidX = (e.touches[0].clientX + e.touches[1].clientX) / 2 - rect.left;
+        pinchMidY = (e.touches[0].clientY + e.touches[1].clientY) / 2 - rect.top;
+      }
+    }, { passive: false });
+
+    svg.addEventListener('touchmove', (e) => {
+      if (isPinching && e.touches.length === 2) {
+        e.preventDefault();
+        const currentDist = getDistance(e.touches[0], e.touches[1]);
+        if (pinchStartDist > 0) {
+          const factor = currentDist / pinchStartDist;
+          const newScale = Math.min(Math.max(pinchStartScale * factor, 0.25), 2.5);
+
+          this.panX = pinchMidX - (pinchMidX - pinchStartPanX) * (newScale / pinchStartScale);
+          this.panY = pinchMidY - (pinchMidY - pinchStartPanY) * (newScale / pinchStartScale);
+          this.scale = newScale;
+          this.updateTransform();
+        }
+      } else if (isTouchDragging && e.touches.length === 1) {
+        e.preventDefault();
+        this.panX = e.touches[0].clientX - touchStartX;
+        this.panY = e.touches[0].clientY - touchStartY;
+        this.updateTransform();
+      }
+    }, { passive: false });
+
+    const handleTouchEnd = () => {
+      isTouchDragging = false;
+      isPinching = false;
+    };
+
+    svg.addEventListener('touchend', handleTouchEnd);
+    svg.addEventListener('touchcancel', handleTouchEnd);
+
+    // 4. Zoom Controls
     const btnZoomIn = controls.querySelector('.chart-btn-zoom-in');
     const btnZoomOut = controls.querySelector('.chart-btn-zoom-out');
     const btnReset = controls.querySelector('.chart-btn-reset');
 
     if (btnZoomIn) {
-      btnZoomIn.addEventListener('click', () => {
-        this.scale = Math.min(this.scale * 1.2, 2.2);
+      btnZoomIn.addEventListener('click', (e) => {
+        e.stopPropagation();
+        this.scale = Math.min(this.scale * 1.25, 2.5);
         this.updateTransform();
       });
     }
 
     if (btnZoomOut) {
-      btnZoomOut.addEventListener('click', () => {
-        this.scale = Math.max(this.scale * 0.8, 0.35);
+      btnZoomOut.addEventListener('click', (e) => {
+        e.stopPropagation();
+        this.scale = Math.max(this.scale * 0.75, 0.25);
         this.updateTransform();
       });
     }
 
     if (btnReset) {
-      btnReset.addEventListener('click', () => {
-        this.scale = 1;
-        this.panX = 60;
-        this.panY = 60;
-        this.updateTransform();
+      btnReset.addEventListener('click', (e) => {
+        e.stopPropagation();
+        this.fitView(svg);
       });
     }
   }
