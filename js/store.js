@@ -1,6 +1,6 @@
 import { initialBookmarkData } from './bookmarks-data.js';
 
-const STORAGE_KEY = 'web_store_bookmarks_data_v3';
+const STORAGE_KEY = 'web_store_bookmarks_data_v4';
 const FAVORITES_KEY = 'web_store_favorites_v2';
 
 class BookmarkStore {

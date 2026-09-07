@@ -714,6 +714,42 @@ export const initialBookmarkData = {
               "name": "HoloSticker Icons",
               "type": "url",
               "url": "https://www.holosticker.dev/"
+            },
+            {
+              "date_added": "13433220000000000",
+              "date_last_used": "0",
+              "guid": "5a6b7c8d-9e0f-1a2b-3c4d-5e6f7a8b9c0d",
+              "id": "560",
+              "meta_info": {
+                "power_bookmark_meta": ""
+              },
+              "name": "Lucide Icons",
+              "type": "url",
+              "url": "https://lucide.dev/icons/"
+            },
+            {
+              "date_added": "13433220010000000",
+              "date_last_used": "0",
+              "guid": "6b7c8d9e-0f1a-2b3c-4d5e-6f7a8b9c0d1e",
+              "id": "561",
+              "meta_info": {
+                "power_bookmark_meta": ""
+              },
+              "name": "Flaticon",
+              "type": "url",
+              "url": "https://www.flaticon.com/"
+            },
+            {
+              "date_added": "13433220020000000",
+              "date_last_used": "0",
+              "guid": "7c8d9e0f-1a2b-3c4d-5e6f-7a8b9c0d1e2f",
+              "id": "562",
+              "meta_info": {
+                "power_bookmark_meta": ""
+              },
+              "name": "Google Material Icons",
+              "type": "url",
+              "url": "https://fonts.google.com/icons"
             }
           ],
           "date_added": "13431182572182638",
