@@ -49,8 +49,59 @@ Each website bookmark is an object with the following fields:
 
 ## 📝 User's Custom Instructions & Preferences
 
-*(Add your specific instructions, preferred categories, naming conventions, or workflow rules below. Agents will read and strictly follow them for future updates.)*
-
 <!-- USER INSTRUCTIONS START HERE -->
+
+### 🔄 Automated Path-Based Bookmark Addition Workflow
+
+Whenever the user provides a bookmark path and URL in the following tree format:
+
+```text
+⭐ All Websites
+└── <Folder 1>
+    └── <Folder 2>
+        └── <Subfolder N>
+            └── <Website Name>
+
+<https://example.com/>
+```
+
+The AI Agent MUST strictly execute the following steps:
+
+1. **Check for Existing Bookmark**:
+   - Search `js/bookmarks-data.js` to see if the URL or website is already added.
+   - If it already exists in the requested path, notify the user that it is already present.
+
+2. **Traverse and Auto-Create Missing Folders**:
+   - Follow the hierarchy starting from `⭐ All Websites`.
+   - If any subfolder in the path does not exist, automatically create the folder object with:
+     - A new unique numeric `id` (greater than the highest existing ID).
+     - Clean name preserving leading emojis (e.g., `🤖 AI Design Prompts`).
+     - Standard folder fields: `children: []`, `type: "folder"`, fresh `guid`, and timestamps.
+
+3. **Insert Bookmark Object**:
+   - Add the new bookmark object into the target subfolder's `children` array:
+     ```json
+     {
+       "date_added": "<timestamp_string>",
+       "date_last_used": "0",
+       "guid": "<unique_uuid_v4>",
+       "id": "<new_unique_numeric_id>",
+       "meta_info": { "power_bookmark_meta": "" },
+       "name": "<Website Name>",
+       "type": "url",
+       "url": "<https://example.com/>"
+     }
+     ```
+
+4. **Cache Invalidation (Bump `STORAGE_KEY`)**:
+   - In `js/store.js`, bump `STORAGE_KEY` (e.g. `v3` ➔ `v4`) so existing visitors and browser sessions immediately load the new bookmark data without localStorage caching conflicts.
+
+5. **Validate Syntax & Verify Tree**:
+   - Run `node --check js/bookmarks-data.js; node --check js/store.js`.
+   - Verify discovery of the new item at the exact path using a quick Node script.
+
+6. **Git Commit & Push**:
+   - Stage and commit: `git commit -m "feat: add <Website Name> bookmark under <Path>"`
+   - Push to `origin main` to update GitHub Pages live deployment immediately.
 
 <!-- USER INSTRUCTIONS END HERE -->
