@@ -1,0 +1,198 @@
+/* =========================================================
+   SKEUOMORPHIC DESIGN SYSTEM (Day / Light Mode Only)
+   Physical textures, tactile depth, bevels, and realistic shadows.
+   ========================================================= */
+
+:root {
+  /* Surface & Base Colors */
+  --desk-bg: #e9edf3;
+  --desk-texture: #e2e8f0;
+  --panel-bg: #eef2f7;
+  --panel-highlight: #ffffff;
+  --panel-shadow: #c5cbd5;
+
+  /* Typography */
+  --text-primary: #1e293b;
+  --text-secondary: #475569;
+  --text-muted: #64748b;
+  --text-engraved: rgba(255, 255, 255, 0.9);
+
+  /* Skeuomorphic Materials & Accents */
+  --leather-tab: #d97706;
+  --brass-star: #eab308;
+  --brass-shadow: #ca8a04;
+  --accent-blue: #2563eb;
+  --accent-blue-top: #3b82f6;
+  --accent-blue-bottom: #1d4ed8;
+
+  /* Physical Shadows & Depths */
+  --skeuo-extruded-sm: 3px 3px 6px #cad1db, -3px -3px 6px #ffffff;
+  --skeuo-extruded-md: 6px 6px 14px #c2c9d4, -6px -6px 14px #ffffff;
+  --skeuo-extruded-lg: 10px 10px 22px #bdc5d1, -10px -10px 22px #ffffff;
+  --skeuo-extruded-card: 5px 6px 12px rgba(160, 174, 192, 0.4), 
+                         -4px -4px 10px rgba(255, 255, 255, 0.9),
+                         inset 0 1px 1px #ffffff;
+
+  /* Recessed / Inset Trays */
+  --skeuo-recessed: inset 2.5px 2.5px 6px #c4ccd7, 
+                    inset -2.5px -2.5px 6px #ffffff;
+  --skeuo-recessed-deep: inset 4px 4px 8px #bec6d2, 
+                         inset -4px -4px 8px #ffffff;
+  --skeuo-pressed-btn: inset 2px 2px 4px rgba(0, 0, 0, 0.18), 
+                       inset -1px -1px 2px #ffffff;
+
+  /* Bevel Borders */
+  --bevel-light: 1px solid rgba(255, 255, 255, 0.95);
+  --bevel-dark: 1px solid rgba(180, 190, 205, 0.6);
+
+  /* Radii */
+  --radius-xs: 6px;
+  --radius-sm: 10px;
+  --radius-md: 14px;
+  --radius-lg: 20px;
+  --radius-full: 9999px;
+
+  /* Transitions */
+  --tactile-spring: 0.2s cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+
+/* Reset */
+*, *::before, *::after {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  width: 100%;
+  height: 100%;
+  font-family: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+  color: var(--text-primary);
+  background-color: var(--desk-bg);
+  /* Realistic fine studio drafting texture */
+  background-image: 
+    radial-gradient(circle at 50% 0%, #f8fafc 0%, transparent 75%),
+    linear-gradient(rgba(226, 232, 240, 0.5) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(226, 232, 240, 0.5) 1px, transparent 1px);
+  background-size: 100% 100%, 24px 24px, 24px 24px;
+  overflow-x: hidden;
+  -webkit-font-smoothing: antialiased;
+}
+
+/* Skeuomorphic Panel Base */
+.skeuo-panel {
+  background: var(--panel-bg);
+  border-radius: var(--radius-lg);
+  box-shadow: var(--skeuo-extruded-md);
+  border-top: 1.5px solid #ffffff;
+  border-left: 1.5px solid #ffffff;
+  border-bottom: 1.5px solid #c8d0da;
+  border-right: 1.5px solid #c8d0da;
+  position: relative;
+}
+
+/* Tactile Convex Push-Buttons */
+.tactile-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  padding: 8px 16px;
+  font-size: 0.86rem;
+  font-weight: 700;
+  font-family: inherit;
+  color: var(--text-secondary);
+  background: linear-gradient(180deg, #ffffff 0%, #e8edf3 100%);
+  border-radius: var(--radius-sm);
+  border-top: 1px solid #ffffff;
+  border-left: 1px solid #ffffff;
+  border-bottom: 1.5px solid #b8c2cf;
+  border-right: 1.5px solid #b8c2cf;
+  box-shadow: 2px 3px 6px #cbd3de, -2px -2px 5px #ffffff;
+  cursor: pointer;
+  text-decoration: none;
+  user-select: none;
+  white-space: nowrap;
+  transition: all var(--tactile-spring);
+}
+
+.tactile-btn:hover {
+  background: linear-gradient(180deg, #ffffff 0%, #f1f5f9 100%);
+  color: var(--text-primary);
+  box-shadow: 3px 4px 8px #c2c9d5, -3px -3px 6px #ffffff;
+}
+
+.tactile-btn:active, .tactile-btn.active {
+  background: linear-gradient(180deg, #dbe2ea 0%, #edf2f7 100%);
+  box-shadow: var(--skeuo-pressed-btn);
+  transform: translateY(1.5px);
+  border-top: 1px solid #b4becb;
+  border-left: 1px solid #b4becb;
+  border-bottom: 1px solid #ffffff;
+  border-right: 1px solid #ffffff;
+}
+
+.tactile-btn-primary {
+  background: linear-gradient(180deg, var(--accent-blue-top) 0%, var(--accent-blue-bottom) 100%);
+  color: #ffffff !important;
+  border-top: 1px solid #93c5fd;
+  border-left: 1px solid #93c5fd;
+  border-bottom: 2px solid #1e3a8a;
+  border-right: 1.5px solid #1e3a8a;
+  box-shadow: 2px 4px 10px rgba(37, 99, 235, 0.4), -2px -2px 6px #ffffff;
+  text-shadow: 0 1px 2px rgba(0, 0, 0, 0.35);
+}
+
+.tactile-btn-primary:hover {
+  background: linear-gradient(180deg, #60a5fa 0%, #2563eb 100%);
+  box-shadow: 3px 6px 14px rgba(37, 99, 235, 0.5), -2px -2px 6px #ffffff;
+}
+
+.tactile-btn-primary:active {
+  background: linear-gradient(180deg, #1d4ed8 0%, #2563eb 100%);
+  box-shadow: inset 2px 3px 6px rgba(0, 0, 0, 0.4);
+  transform: translateY(1.5px);
+}
+
+.tactile-btn-sm {
+  padding: 5px 11px;
+  font-size: 0.78rem;
+  border-radius: var(--radius-xs);
+}
+
+/* Recessed Input Tray */
+.recessed-tray {
+  background: #e2e8f0;
+  box-shadow: var(--skeuo-recessed);
+  border-radius: var(--radius-full);
+  border-bottom: 1px solid #ffffff;
+  border-right: 1px solid #ffffff;
+  border-top: 1px solid #cbd5e1;
+  border-left: 1px solid #cbd5e1;
+}
+
+/* Embossed Text */
+.embossed-text {
+  text-shadow: 0 1px 0 rgba(255, 255, 255, 0.9);
+}
+
+/* Engraved Text */
+.engraved-text {
+  color: #64748b;
+  text-shadow: 0 1px 0 #ffffff;
+}
+
+/* Manila Folder Pill */
+.manila-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  padding: 3px 8px;
+  border-radius: 6px;
+  background: linear-gradient(180deg, #fef3c7 0%, #fde68a 100%);
+  border: 1px solid #fbbf24;
+  color: #92400e;
+  font-size: 0.74rem;
+  font-weight: 700;
+  box-shadow: 1px 1px 3px rgba(180, 83, 9, 0.15), inset 0 1px 0 #fffbeb;
+}

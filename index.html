@@ -1,0 +1,314 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Tactile Skeuomorphic Web Store & Tree Directory</title>
+    <meta
+      name="description"
+      content="A handcrafted tactile Skeuomorphic directory and hierarchical tree explorer for all your curated websites and bookmarks."
+    />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@500;600;700;800&display=swap"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="css/skeuomorphic.css" />
+    <link rel="stylesheet" href="css/components.css" />
+  </head>
+  <body>
+    <!-- App Layout -->
+    <div class="app-layout">
+      <!-- Skeuomorphic Sidebar (Tactile Binder) -->
+      <aside class="sidebar skeuo-panel" id="app-sidebar">
+        <div class="sidebar-header">
+          <div class="brand-badge">
+            <div class="brand-logo-plate">⭐</div>
+            <div class="brand-info">
+              <h1>All Websites</h1>
+              <span>Tree & Desk Store</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- Quick Navigation -->
+        <nav class="quick-nav" aria-label="Quick filters">
+          <div class="nav-item active" data-filter="folder">
+            <div class="nav-item-left">
+              <span>🌳</span>
+              <span>All Categories</span>
+            </div>
+            <span class="count-pill" id="count-all">0</span>
+          </div>
+          <div class="nav-item" data-filter="favorites">
+            <div class="nav-item-left">
+              <span>⭐</span>
+              <span>Starred Favorites</span>
+            </div>
+            <span class="count-pill" id="count-favorites">0</span>
+          </div>
+          <div class="nav-item" data-filter="recent">
+            <div class="nav-item-left">
+              <span>🕒</span>
+              <span>Recently Added</span>
+            </div>
+            <span class="count-pill" id="count-recent">0</span>
+          </div>
+          <div class="nav-item" data-filter="all_flat">
+            <div class="nav-item-left">
+              <span>🌐</span>
+              <span>Everything (Flat List)</span>
+            </div>
+          </div>
+        </nav>
+
+        <div class="sidebar-section-title">
+          <span>Category Folders</span>
+        </div>
+
+        <!-- Folder Explorer Tree -->
+        <div class="folder-tree-container" id="sidebar-tree">
+          <!-- Injected dynamically via ui.js -->
+        </div>
+
+        <!-- Sidebar Footer -->
+        <div class="sidebar-footer">
+          <button
+            class="tactile-btn tactile-btn-sm"
+            id="btn-open-add-folder"
+            style="width: 100%"
+          >
+            <span>📁</span> + Add New Category
+          </button>
+        </div>
+      </aside>
+
+      <!-- Main Content Area -->
+      <main class="main-wrapper">
+        <!-- Top Header Bar -->
+        <header class="top-header skeuo-panel">
+          <!-- Recessed Search Box -->
+          <div class="search-container">
+            <div class="search-input-wrapper recessed-tray">
+              <span class="search-icon">🔍</span>
+              <input
+                type="text"
+                id="search-input"
+                class="search-input"
+                placeholder="Search websites, tools, categories, or URLs..."
+                autocomplete="off"
+              />
+              <span class="search-shortcut-badge">Ctrl K</span>
+            </div>
+          </div>
+
+          <!-- View Mode Switcher (Grid vs Tree vs Chart) -->
+          <div class="view-mode-selector">
+            <button
+              class="view-mode-btn"
+              id="btn-view-grid"
+              title="Desk Grid Cards"
+            >
+              <span>🗂️</span> Desk Grid
+            </button>
+            <button
+              class="view-mode-btn"
+              id="btn-view-tree"
+              title="Branching Tree View"
+            >
+              <span>🌳</span> Tree View
+            </button>
+            <button
+              class="view-mode-btn"
+              id="btn-view-chart"
+              title="Horizontal Node Mind Map"
+            >
+              <span>🔗</span> Chart View
+            </button>
+          </div>
+
+          <div class="header-actions">
+            <button
+              class="tactile-btn tactile-btn-primary"
+              id="btn-open-add-site"
+            >
+              <span>+</span> Add Website
+            </button>
+          </div>
+        </header>
+
+        <!-- Content Body Area -->
+        <section class="content-body skeuo-panel">
+          <!-- Toolbar & Breadcrumbs Bar -->
+          <div class="toolbar-bar">
+            <div class="breadcrumb-trail" id="breadcrumbs-trail">
+              <!-- Dynamic breadcrumbs -->
+            </div>
+
+            <!-- Tree Actions (Expand / Collapse All) -->
+            <div class="tree-actions">
+              <button
+                class="tactile-btn tactile-btn-sm"
+                id="btn-expand-all"
+                title="Expand all tree branches"
+              >
+                <span>➕</span> Expand All
+              </button>
+              <button
+                class="tactile-btn tactile-btn-sm"
+                id="btn-collapse-all"
+                title="Collapse all tree branches"
+              >
+                <span>➖</span> Collapse All
+              </button>
+              <div
+                class="engraved-text"
+                style="font-size: 0.8rem; font-weight: 700; margin-left: 8px"
+                id="view-stats"
+              >
+                Loading...
+              </div>
+            </div>
+          </div>
+
+          <!-- Dynamic Content (Visual Tree or Desk Grid) -->
+          <div id="content-body">
+            <!-- Injected dynamically via ui.js -->
+          </div>
+        </section>
+      </main>
+    </div>
+
+    <!-- =========================================================
+       MODAL 1: ADD WEBSITE
+       ========================================================= -->
+    <div class="modal-overlay" id="modal-add-site">
+      <div class="modal-box skeuo-panel">
+        <div class="modal-header">
+          <div class="modal-title"><span>🔗</span> Add New Website</div>
+          <button
+            class="tactile-btn tactile-btn-sm modal-close-btn"
+            type="button"
+          >
+            ✕
+          </button>
+        </div>
+        <form id="form-add-site">
+          <div class="form-group">
+            <label class="form-label" for="site-target-folder"
+              >Destination Category / Folder</label
+            >
+            <select
+              id="site-target-folder"
+              class="form-select"
+              required
+            ></select>
+          </div>
+          <div class="form-group">
+            <label class="form-label" for="site-name">Website Name</label>
+            <input
+              type="text"
+              id="site-name"
+              class="form-input"
+              placeholder="e.g. ChatGPT, Figma, GitHub"
+              required
+            />
+          </div>
+          <div class="form-group">
+            <label class="form-label" for="site-url">Website URL</label>
+            <input
+              type="text"
+              id="site-url"
+              class="form-input"
+              placeholder="https://example.com"
+              required
+            />
+          </div>
+          <div class="form-group">
+            <label class="form-label" for="site-description"
+              >Short Description (Optional)</label
+            >
+            <textarea
+              id="site-description"
+              class="form-textarea"
+              placeholder="Brief note on what this site is for..."
+            ></textarea>
+          </div>
+          <div class="modal-footer">
+            <button type="button" class="tactile-btn modal-close-btn-action">
+              Cancel
+            </button>
+            <button type="submit" class="tactile-btn tactile-btn-primary">
+              Save Website
+            </button>
+          </div>
+        </form>
+      </div>
+    </div>
+
+    <!-- =========================================================
+       MODAL 2: ADD CATEGORY FOLDER
+       ========================================================= -->
+    <div class="modal-overlay" id="modal-add-folder">
+      <div class="modal-box skeuo-panel">
+        <div class="modal-header">
+          <div class="modal-title"><span>📁</span> Add New Category Folder</div>
+          <button
+            class="tactile-btn tactile-btn-sm modal-close-btn"
+            type="button"
+          >
+            ✕
+          </button>
+        </div>
+        <form id="form-add-folder">
+          <div class="form-group">
+            <label class="form-label" for="folder-parent"
+              >Parent Category / Folder</label
+            >
+            <select id="folder-parent" class="form-select" required></select>
+          </div>
+          <div class="form-group">
+            <label class="form-label" for="folder-icon">Category Icon</label>
+            <select id="folder-icon" class="form-select">
+              <option value="📁">📁 Folder</option>
+              <option value="💻">💻 Dev / Tech</option>
+              <option value="🤖">🤖 AI & ML</option>
+              <option value="🎨">🎨 Design & Art</option>
+              <option value="📚">📚 Learn & Books</option>
+              <option value="🛠️">🛠️ Tools</option>
+              <option value="🔎">🔎 OSINT & Research</option>
+              <option value="🌐">🌐 Web & Social</option>
+              <option value="🚀">🚀 Projects</option>
+              <option value="💡">💡 Ideas</option>
+              <option value="🔖">🔖 Bookmarks</option>
+            </select>
+          </div>
+          <div class="form-group">
+            <label class="form-label" for="folder-name">Folder Name</label>
+            <input
+              type="text"
+              id="folder-name"
+              class="form-input"
+              placeholder="e.g. Next.js Resources"
+              required
+            />
+          </div>
+          <div class="modal-footer">
+            <button type="button" class="tactile-btn modal-close-btn-action">
+              Cancel
+            </button>
+            <button type="submit" class="tactile-btn tactile-btn-primary">
+              Create Folder
+            </button>
+          </div>
+        </form>
+      </div>
+    </div>
+
+    <!-- Toast Notification Container -->
+    <div class="toast-container" id="toast-container" aria-live="polite"></div>
+
+    <script type="module" src="js/app.js"></script>
+  </body>
+</html>
