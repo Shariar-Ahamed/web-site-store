@@ -668,6 +668,29 @@ export const initialBookmarkData = {
               "id": "552",
               "name": "🧩 UI Components & Sections",
               "type": "folder"
+            },
+            {
+              "children": [
+                {
+                  "date_added": "13433219900000000",
+                  "date_last_used": "0",
+                  "guid": "a7b8c9d0-1234-4567-89ab-cdef01234567",
+                  "id": "559",
+                  "meta_info": {
+                    "power_bookmark_meta": ""
+                  },
+                  "name": "SceneAI",
+                  "type": "url",
+                  "url": "https://sceneai.art/"
+                }
+              ],
+              "date_added": "13433219900000000",
+              "date_last_used": "0",
+              "date_modified": "13433219900000000",
+              "guid": "b8c9d0e1-2345-6789-01bc-def012345678",
+              "id": "558",
+              "name": "🤖 AI Design Prompts",
+              "type": "folder"
             }
           ],
           "date_added": "13431182572182638",
